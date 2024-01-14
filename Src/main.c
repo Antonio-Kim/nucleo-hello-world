@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #define PERIPH_BASE                 (0x40000000UL)
 #define AHB1PERIPH_BASE             (PERIPH_BASE + 0x00020000UL)
 #define AHB2PERIPH_BASE             (PERIPH_BASE + 0x08000000UL)
@@ -22,6 +24,7 @@ int main(void) {
 	GPIOA_MODE_R |= (1U<<10);
 	GPIOA_MODE_R &= ~(1U<<11);
 	while (1) {
-		GPIO_ODR_R |= GPIO_ODR_PIN5;
+		GPIO_ODR_R ^= GPIO_ODR_PIN5;
+		for (size_t i = 0; i < 1000000;i++) {}
 	}
 }
