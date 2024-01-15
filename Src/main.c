@@ -1,5 +1,7 @@
 #include <stddef.h>
 
+//#include "main.h"
+
 #define PERIPH_BASE                 (0x40000000UL)
 #define AHB1PERIPH_BASE             (PERIPH_BASE + 0x00020000UL)
 #define AHB2PERIPH_BASE             (PERIPH_BASE + 0x08000000UL)
@@ -19,12 +21,25 @@
 #define GPIO_ODR_OD5_Msk            (0x1UL << GPIO_ODR_OD5_Pos) 
 #define GPIO_ODR_PIN5               GPIO_ODR_OD5_Msk
 
+#define RCC							((RCC_TypeDef *) RCC_BASE)
+#define GPIOA						((GPIO_TypeDef *) GPIOA_BASE)
+
 int main(void) {
-	RCC_AHB2ENR_R |= RCC_AHB2ENR_GPIOAEN;
-	GPIOA_MODE_R |= (1U<<10);
-	GPIOA_MODE_R &= ~(1U<<11);
-	while (1) {
-		GPIO_ODR_R ^= GPIO_ODR_PIN5;
-		for (size_t i = 0; i < 1000000;i++) {}
-	}
+	 RCC_AHB2ENR_R |= RCC_AHB2ENR_GPIOAEN;
+	 GPIOA_MODE_R |= (1U<<10);
+	 GPIOA_MODE_R &= ~(1U<<11);
+	 while (1) {
+	 	GPIO_ODR_R ^= GPIO_ODR_PIN5;
+	 	for (size_t i = 0; i < 1000000;i++) {}
+	 }
+
+//	 Use the following below if you're using main.h
+//
+//	 RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+//	 GPIOA->MODER |= (1U<<10);
+//	 GPIOA->MODER &= ~(1U<<11);
+//	 while (1) {
+//		GPIOA->ODR ^= GPIO_ODR_PIN5;
+//		for (size_t i = 0; i < 1000000;i++) {}
+//	 }
 }
